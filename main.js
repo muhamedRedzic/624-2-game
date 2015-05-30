@@ -11,6 +11,7 @@ var mainState = {
         // Load the bird sprite
         game.load.image('bird', 'assets/bird.png');
         game.load.image('pipe', 'assets/pipe.png');
+        game.load.image('grass', 'assets/grass.png')
 
         // velocity of the pipes
         this.pipeVelocity = -200;
@@ -19,6 +20,9 @@ var mainState = {
     create: function() {
         // Set the physics system
         game.physics.startSystem(Phaser.Physics.ARCADE);
+
+        // Display grass background on the screen
+        this.grass = game.add.tileSprite(0, 0, 400, 490, 'grass');
 
         // Display the bird on the screen
         this.bird = this.game.add.sprite(100, 245, 'bird');
@@ -48,13 +52,10 @@ var mainState = {
         if (this.bird.inWorld == false)
             this.restartGame();
 
+        this.grass.tilePosition.x -= 4;
+
         //update game results
         game.physics.arcade.overlap(this.bird, this.pipes, this.restartGame, null, this);
-
-        if(this.bird.x == this.pipes.x) {
-            console.log("SCORE");
-            this.score();
-        }
     },
 
     // Starts the game
@@ -87,6 +88,7 @@ var mainState = {
         // Start the 'main' state, which restarts the game
         game.state.start('main');
     },
+
     addOnePipe: function(x, y) {
         // Get the first dead pipe of our group
         var pipe = this.pipes.getFirstDead();
@@ -110,15 +112,16 @@ var mainState = {
         for (var i = 0; i < 8; i++)
             if (i != hole && i != hole + 1)
                 this.addOnePipe(400, i * 60 + 10);
+        this.scored();
     },
 
-    score: function() {
+    scored: function() {
         //each time we create a row of pipes the score is bigger
         this.score += 1;
         this.labelScore.text = this.score;
 
-        if(this.score % 10 == 0) {
-            this.velocity += 50;
+        if((this.score % 10) == 0) {
+            this.pipeVelocity -= 50;
         }
     }
 };
