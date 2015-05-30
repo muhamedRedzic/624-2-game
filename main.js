@@ -44,6 +44,11 @@ var mainState = {
         this.pipes = game.add.group(); // Create a group
         this.pipes.enableBody = true;  // Add physics to the group
         this.pipes.createMultiple(20, 'pipe'); // Create 20 pipes
+
+
+        //start label, explanations
+        this.startKey = "";
+        this.labelStartKey = game.add.text(20, 200, "Press SPACE \nto start game", { font: "50px Arial", fill: "#ffffff" });
     },
 
     update: function() {
@@ -67,7 +72,10 @@ var mainState = {
             //scroring
             this.score = 0;
             this.labelScore = game.add.text(20, 20, "0", {font: "30px Arial", fill: "#ffffff"});
+
+            this.labelStartKey = "";
         }
+
     },
 
     // Lets the mouse move up
