@@ -12,6 +12,8 @@ var mainState = {
         game.load.image('bird', 'assets/bird.png');
         game.load.image('pipe', 'assets/pipe.png');
 
+        // velocity of the pipes
+        this.pipeVelocity = -200;
     },
 
     create: function() {
@@ -23,22 +25,22 @@ var mainState = {
 
         // Add gravity to the bird to make it fall
         game.physics.arcade.enable(this.bird);
-        this.bird.body.gravity.y = 1000;
 
         // Call the 'jump' function when the spacekey is hit
         var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        spaceKey.onDown.add(this.jump, this);
+        spaceKey.onDown.add(this.startGame, this);
+
+        var upKey = this.game.input.keyboard.addKey(Phaser.Keyboard.UP);
+        upKey.onDown.add(this.moveUp, this);
+        upKey.onUp.add(this.moveReset, this);
+
+        var downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+        downKey.onDown.add(this.moveDown, this);
+        downKey.onUp.add(this.moveReset, this);
 
         this.pipes = game.add.group(); // Create a group
         this.pipes.enableBody = true;  // Add physics to the group
         this.pipes.createMultiple(20, 'pipe'); // Create 20 pipes
-
-        //timer for loops
-        this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
-
-        //scroring
-        this.score = 0;
-        this.labelScore = game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
     },
 
     update: function() {
@@ -48,12 +50,36 @@ var mainState = {
 
         //update game results
         game.physics.arcade.overlap(this.bird, this.pipes, this.restartGame, null, this);
+
+        if(this.bird.x == this.pipes.x) {
+            console.log("SCORE");
+            this.score();
+        }
     },
 
-    // Make the bird jump
-    jump: function() {
-        // Add a vertical velocity to the bird
-        this.bird.body.velocity.y = -350;
+    // Starts the game
+    startGame: function() {
+        //timer for loops
+        this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
+
+        //scroring
+        this.score = 0;
+        this.labelScore = game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
+    },
+
+    // Lets the mouse move up
+    moveUp: function() {
+        this.bird.body.velocity.y = -300;
+    },
+
+    // Lets the mouse move down
+    moveDown: function() {
+        this.bird.body.velocity.y = 300;
+    },
+
+    // Lets the mouse move straight
+    moveReset: function() {
+        this.bird.body.velocity.y = 0;
     },
 
 // Restart the game
@@ -69,17 +95,14 @@ var mainState = {
         pipe.reset(x, y);
 
         // Add velocity to the pipe to make it move left
-        pipe.body.velocity.x = -200;
+        pipe.body.velocity.x = this.pipeVelocity;
 
         // Kill the pipe when it's no longer visible
         pipe.checkWorldBounds = true;
         pipe.outOfBoundsKill = true;
     },
-    addRowOfPipes: function() {
-        //each time we create a row of pipes the score is bigger
-        this.score += 1;
-        this.labelScore.text = this.score;
 
+    addRowOfPipes: function() {
         // Pick where the hole will be
         var hole = Math.floor(Math.random() * 5) + 1;
 
@@ -87,6 +110,16 @@ var mainState = {
         for (var i = 0; i < 8; i++)
             if (i != hole && i != hole + 1)
                 this.addOnePipe(400, i * 60 + 10);
+    },
+
+    score: function() {
+        //each time we create a row of pipes the score is bigger
+        this.score += 1;
+        this.labelScore.text = this.score;
+
+        if(this.score % 10 == 0) {
+            this.velocity += 50;
+        }
     }
 };
 
