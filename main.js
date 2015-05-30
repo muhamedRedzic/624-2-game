@@ -57,11 +57,7 @@ var mainState = {
 
 
         //start label, explanations
-        this.labelStartKey = game.add.text(this.world.centerX/3, game.world.centerY/2, "Press SPACE \nto start game");
-        this.labelStartKey.font = "Akronim";
-        this.labelStartKey.fontSize = 80;
-        this.labelStartKey.align = "center";
-        this.labelStartKey.fill = "#ffffff";
+        this.labelStartKey = game.add.text(this.world.centerX/3, this.world.centerY/2, "Press SPACE \nto start game", {font: "80px Akronim", fill: "#ffffff"});
     },
 
     update: function() {
@@ -78,17 +74,17 @@ var mainState = {
     // Starts the game
     startGame: function() {
         if(!this.playing) {
+            this.labelStartKey.text = "";
+            if(this.gameOverLabel != null)
+                this.gameOverLabel.text = "";
             this.playing = true;
             //timer for loops
             this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
 
-            //scroring
+            //scoring
             this.score = 0;
-            this.labelScore = game.add.text(20, 20, "0", {font: "30px Arial", fill: "#ffffff"});
-
-            this.labelStartKey = "";
+            this.labelScore = game.add.text(20, 20, "0", {font: "60px Akronim", fill: "#ffffff"});
         }
-
     },
 
     // Lets the mouse move up
@@ -110,7 +106,12 @@ var mainState = {
     restartGame: function() {
         // Start the 'main' state, which restarts the game
         this.playing = false;
-        game.state.start('main');
+        this.labelScore.text = "";
+        this.gameOverLabel = game.add.text(this.world.centerX/3, this.world.centerY/2, "", {font: "80px Akronim", fill: "#ffffff"});
+        this.gameOverLabel.text = "Game Over!\nFinal Score: "+this.score
+        setTimeout(function(){
+            game.state.start('main');
+        }, 2000);
     },
 
     addOnePipe: function(x, y) {
