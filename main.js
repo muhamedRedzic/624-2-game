@@ -1,13 +1,10 @@
 // Initialize Phaser, and create a 400x490px game
-var game = new Phaser.Game(400, 490, Phaser.AUTO, 'gameDiv');
+var game = new Phaser.Game(600, 490, Phaser.AUTO, 'gameDiv');
 
 // Create our 'main' state that will contain the game
 var mainState = {
 
     preload: function() {
-        // Change the background color of the game
-        game.stage.backgroundColor = '#71c5cf';
-
         // Load the bird sprite
         game.load.image('bird', 'assets/bird.png');
         game.load.image('pipe', 'assets/pipe.png');
@@ -16,6 +13,7 @@ var mainState = {
         // velocity of the pipes
         this.pipeVelocity = -200;
         this.grassTileSpeed = 4;
+        this.playing = false;
     },
 
     create: function() {
@@ -23,7 +21,7 @@ var mainState = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         // Display grass background on the screen
-        this.grass = game.add.tileSprite(0, 0, 400, 490, 'grass');
+        this.grass = game.add.tileSprite(0, 0, 600, 490, 'grass');
 
         // Display the bird on the screen
         this.bird = this.game.add.sprite(100, 245, 'bird');
@@ -61,12 +59,15 @@ var mainState = {
 
     // Starts the game
     startGame: function() {
-        //timer for loops
-        this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
+        if(!this.playing) {
+            this.playing = true;
+            //timer for loops
+            this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
 
-        //scroring
-        this.score = 0;
-        this.labelScore = game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
+            //scroring
+            this.score = 0;
+            this.labelScore = game.add.text(20, 20, "0", {font: "30px Arial", fill: "#ffffff"});
+        }
     },
 
     // Lets the mouse move up
@@ -87,6 +88,7 @@ var mainState = {
 // Restart the game
     restartGame: function() {
         // Start the 'main' state, which restarts the game
+        this.playing = false;
         game.state.start('main');
     },
 
@@ -110,9 +112,9 @@ var mainState = {
         var hole = Math.floor(Math.random() * 5) + 1;
 
         // Add the 6 pipes
-        for (var i = 0; i < 8; i++)
+        for (var i = 0; i < 9; i++)
             if (i != hole && i != hole + 1)
-                this.addOnePipe(400, i * 60 + 10);
+                this.addOnePipe(600, i * 60);
         this.scored();
     },
 
