@@ -15,6 +15,7 @@ var mainState = {
 
         // velocity of the pipes
         this.pipeVelocity = -200;
+        this.grassTileSpeed = 4;
     },
 
     create: function() {
@@ -52,7 +53,7 @@ var mainState = {
         if (this.bird.inWorld == false)
             this.restartGame();
 
-        this.grass.tilePosition.x -= 4;
+        this.grass.tilePosition.x -= this.grassTileSpeed;
 
         //update game results
         game.physics.arcade.overlap(this.bird, this.pipes, this.restartGame, null, this);
@@ -70,12 +71,12 @@ var mainState = {
 
     // Lets the mouse move up
     moveUp: function() {
-        this.bird.body.velocity.y = -300;
+        this.bird.body.velocity.y = -400;
     },
 
     // Lets the mouse move down
     moveDown: function() {
-        this.bird.body.velocity.y = 300;
+        this.bird.body.velocity.y = 400;
     },
 
     // Lets the mouse move straight
@@ -122,6 +123,7 @@ var mainState = {
 
         if((this.score % 10) == 0) {
             this.pipeVelocity -= 50;
+            this.grassTileSpeed += 1;
         }
     }
 };
