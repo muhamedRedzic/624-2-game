@@ -1,12 +1,11 @@
 // Initialize Phaser, and create a 400x490px game
-var game = new Phaser.Game(600, 490, Phaser.AUTO, 'gameDiv');
+var game = new Phaser.Game(600, 480, Phaser.AUTO, 'gameDiv');
 
 WebFontConfig = {
     //  The Google Fonts we want to load (specify as many as you like in the array)
     google: {
         families: [ 'Akronim::latin' ]
     }
-
 };
 
 // Create our 'main' state that will contain the game
@@ -55,7 +54,6 @@ var mainState = {
         this.pipes.enableBody = true;  // Add physics to the group
         this.pipes.createMultiple(20, 'pipe'); // Create 20 pipes
 
-
         //start label, explanations
         this.labelStartKey = game.add.text(this.world.centerX/3, this.world.centerY/2, "Press SPACE \nto start game", {font: "80px Akronim", fill: "#ffffff"});
     },
@@ -75,8 +73,6 @@ var mainState = {
     startGame: function() {
         if(!this.playing) {
             this.labelStartKey.text = "";
-            if(this.gameOverLabel != null)
-                this.gameOverLabel.text = "";
             this.playing = true;
             //timer for loops
             this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
@@ -106,12 +102,7 @@ var mainState = {
     restartGame: function() {
         // Start the 'main' state, which restarts the game
         this.playing = false;
-        this.labelScore.text = "";
-        this.gameOverLabel = game.add.text(this.world.centerX/3, this.world.centerY/2, "", {font: "80px Akronim", fill: "#ffffff"});
-        this.gameOverLabel.text = "Game Over!\nFinal Score: "+this.score
-        setTimeout(function(){
-            game.state.start('main');
-        }, 2000);
+        game.state.start('main');
     },
 
     addOnePipe: function(x, y) {
@@ -134,7 +125,7 @@ var mainState = {
         var hole = Math.floor(Math.random() * 5) + 1;
 
         // Add the 6 pipes
-        for (var i = 0; i < 9; i++)
+        for (var i = 0; i < 8; i++)
             if (i != hole && i != hole + 1)
                 this.addOnePipe(600, i * 60);
         this.scored();
