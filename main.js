@@ -1,14 +1,24 @@
 // Initialize Phaser, and create a 400x490px game
 var game = new Phaser.Game(600, 490, Phaser.AUTO, 'gameDiv');
 
+WebFontConfig = {
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: {
+        families: [ 'Akronim::latin' ]
+    }
+
+};
+
 // Create our 'main' state that will contain the game
 var mainState = {
 
     preload: function() {
+        game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+
         // Load the bird sprite
         game.load.image('bird', 'assets/bird.png');
         game.load.image('pipe', 'assets/pipe.png');
-        game.load.image('grass', 'assets/grass.png')
+        game.load.image('grass', 'assets/grass.png');
 
         // velocity of the pipes
         this.pipeVelocity = -200;
@@ -47,8 +57,11 @@ var mainState = {
 
 
         //start label, explanations
-        this.startKey = "";
-        this.labelStartKey = game.add.text(20, 200, "Press SPACE \nto start game", { font: "50px Arial", fill: "#ffffff" });
+        this.labelStartKey = game.add.text(this.world.centerX/3, game.world.centerY/2, "Press SPACE \nto start game");
+        this.labelStartKey.font = "Akronim";
+        this.labelStartKey.fontSize = 80;
+        this.labelStartKey.align = "center";
+        this.labelStartKey.fill = "#ffffff";
     },
 
     update: function() {
@@ -131,7 +144,7 @@ var mainState = {
         this.score += 1;
         this.labelScore.text = this.score;
 
-        if((this.score % 10) == 0) {
+        if ((this.score % 10) == 0) {
             this.pipeVelocity -= 50;
             this.grassTileSpeed += 1;
         }
