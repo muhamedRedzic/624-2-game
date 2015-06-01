@@ -126,7 +126,11 @@ var mainState = {
         if (scoreboardEntry != null && scoreboardEntry.length > 0) {
             console.log("works");
         }
+
+        // Stop sound
+        this.mainLoop.loop = false;
         this.mainLoop.stop();
+
         game.state.start('main');
     },
 
