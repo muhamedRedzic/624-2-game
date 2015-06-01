@@ -50,7 +50,7 @@ var mainState = {
         downKey.onDown.add(this.moveDown, this);
         downKey.onUp.add(this.moveReset, this);
 
-        this.boxes = game.add.group(); // Create a group
+        this.boxes = game.add.group(); // Create a group for the boxes
         this.boxes.enableBody = true;  // Add physics to the group
         this.boxes.createMultiple(20, 'box'); // Create 20 boxes
 
@@ -76,7 +76,7 @@ var mainState = {
             this.playing = true;
 
             //timer for loops
-            this.timer = game.time.events.loop(1500, this.addRowOfboxes, this);
+            this.timer = game.time.events.loop(1500, this.addRowOfBoxes, this);
 
             //scoring
             this.score = 0;
@@ -121,7 +121,7 @@ var mainState = {
         box.outOfBoundsKill = true;
     },
 
-    addRowOfboxes: function() {
+    addRowOfBoxes: function() {
         // Pick where the hole will be
         var hole = Math.floor(Math.random() * 5) + 1;
 
