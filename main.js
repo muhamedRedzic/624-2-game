@@ -114,7 +114,16 @@ var mainState = {
 
     // Toggle mute/unmute
     toggleMute: function() {
-        // TODO Toggle script
+        if(this.mainLoop.loop)
+        {
+            this.mainLoop.loop = false;
+            this.mainLoop.stop();
+        }
+        else
+        {
+            this.mainLoop.play('', 0, 1, true);
+            this.mainLoop.onLoop.add(this.playLevelMusic, this);
+        }
     },
 
     // Restart the game
