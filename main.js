@@ -21,7 +21,7 @@ var mainState = {
 
         // velocity of the boxes
         this.boxVelocity = -200;
-        this.grassTileSpeed = 4;
+        this.grassTileSpeed = 3.35;
         this.playing = false;
     },
 
@@ -139,7 +139,7 @@ var mainState = {
 
         if ((this.score % 10) == 0) {
             this.boxVelocity -= 50;
-            this.grassTileSpeed += 1;
+            this.grassTileSpeed += 0.83;
         }
     }
 };
