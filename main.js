@@ -1,4 +1,4 @@
-// Initialize Phaser, and create a 400x490px game
+// Initialize Phaser, and create a 640x480px game
 var game = new Phaser.Game(600, 480, Phaser.AUTO, 'gameDiv');
 
 WebFontConfig = {
