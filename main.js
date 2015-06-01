@@ -2,7 +2,6 @@
 var game = new Phaser.Game(600, 480, Phaser.AUTO, 'gameDiv');
 
 WebFontConfig = {
-    //  The Google Fonts we want to load (specify as many as you like in the array)
     google: {
         families: [ 'Akronim::latin' ]
     }
@@ -12,6 +11,7 @@ WebFontConfig = {
 var mainState = {
 
     preload: function() {
+        // Load the google font specified in the WebFontConfig
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
         // Load the mouse sprite
@@ -80,7 +80,7 @@ var mainState = {
 
             //scoring
             this.score = 0;
-            this.labelScore = game.add.text(20, 20, "0", {font: "60px Akronim", fill: "#ffffff"});
+            this.labelScore = game.add.text(20, 0, "0", {font: "80px Akronim", fill: "#ffffff"});
         }
     },
 
