@@ -105,6 +105,11 @@ var mainState = {
     restartGame: function() {
         // Start the 'main' state, which restarts the game
         this.playing = false;
+        var scoreboardEntry = prompt("Game Over! You got "+this.score+
+            " points.\nEnter your username to save your result on the scoreboard.", "");
+        if (scoreboardEntry != null && scoreboardEntry.length > 0) {
+            console.log("works");
+        }
         game.state.start('main');
     },
 
