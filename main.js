@@ -14,13 +14,13 @@ var mainState = {
         // Load the google font specified in the WebFontConfig
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
-        // Load the sprites
+        // Load the pictures
         game.load.image('mouse', 'assets/mouse.png');
         game.load.image('box', 'assets/box.png');
         game.load.image('grass', 'assets/grass.png');
-        game.load.image('muteBTN', 'assets/muteBTN.png');
+        //game.load.image('muteBTN', 'assets/muteBTN.png');
 
-        // Audio
+        // Load the sound
         game.load.audio('mainLoop', 'assets/mainLoop.wav');
 
         // velocity of the boxes
@@ -45,6 +45,8 @@ var mainState = {
         this.mainLoop = game.add.audio('mainLoop');
         this.mainLoop.play('', 0, 1, true);
         this.mainLoop.onLoop.add(this.playLevelMusic, this);
+
+        // TODO : mute button?
 
         // Add the physic to the mouse
         game.physics.arcade.enable(this.mouse);
@@ -117,7 +119,7 @@ var mainState = {
         if(this.mainLoop.loop)
         {
             this.mainLoop.loop = false;
-            this.mainLoop.stop();
+            this.mainLoop.pause();
         }
         else
         {
