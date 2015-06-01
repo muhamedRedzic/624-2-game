@@ -21,7 +21,9 @@ var mainState = {
 
         // velocity of the boxes
         this.boxVelocity = -200;
+        // speed of the background grass tiles
         this.grassTileSpeed = 3.35;
+        // "blocks" the space button during playing the game
         this.playing = false;
     },
 
@@ -99,7 +101,7 @@ var mainState = {
         this.mouse.body.velocity.y = 0;
     },
 
-// Restart the game
+    // Restart the game
     restartGame: function() {
         // Start the 'main' state, which restarts the game
         this.playing = false;
