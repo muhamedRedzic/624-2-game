@@ -14,10 +14,14 @@ var mainState = {
         // Load the google font specified in the WebFontConfig
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
-        // Load the mouse sprite
+        // Load the sprites
         game.load.image('mouse', 'assets/mouse.png');
         game.load.image('box', 'assets/box.png');
         game.load.image('grass', 'assets/grass.png');
+        game.load.image('muteBTN', 'assets/muteBTN.png');
+
+        // Audio
+        game.load.audio('mainLoop', 'assets/mainLoop.wav');
 
         // velocity of the boxes
         this.boxVelocity = -200;
@@ -37,6 +41,11 @@ var mainState = {
         // Display the mouse on the screen
         this.mouse = this.game.add.sprite(100, 245, 'mouse');
 
+        // Audio
+        this.mainLoop = game.add.audio('mainLoop');
+        this.mainLoop.play('', 0, 1, true);
+        this.mainLoop.onLoop.add(this.playLevelMusic, this);
+
         // Add the physic to the mouse
         game.physics.arcade.enable(this.mouse);
 
@@ -51,6 +60,8 @@ var mainState = {
         var downKey = this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN); // down
         downKey.onDown.add(this.moveDown, this);
         downKey.onUp.add(this.moveReset, this);
+
+        game.input.onDown.add(this.toggleMute, this); // Clic
 
         this.boxes = game.add.group(); // Create a group for the boxes
         this.boxes.enableBody = true;  // Add physics to the group
@@ -101,10 +112,16 @@ var mainState = {
         this.mouse.body.velocity.y = 0;
     },
 
+    // Toggle mute/unmute
+    toggleMute: function() {
+        // TODO Toggle script
+    },
+
     // Restart the game
     restartGame: function() {
         // Start the 'main' state, which restarts the game
         this.playing = false;
+        this.mainLoop.stop();
         game.state.start('main');
     },
 
@@ -143,6 +160,10 @@ var mainState = {
             this.boxVelocity -= 50;
             this.grassTileSpeed += 0.83;
         }
+    },
+
+    playLevelMusic: function() {
+        this.mainLoop.play('', 0, 1, true);
     }
 };
 
