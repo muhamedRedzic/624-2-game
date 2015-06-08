@@ -18,7 +18,6 @@ var mainState = {
         game.load.image('mouse', 'assets/mouse.png');
         game.load.image('box', 'assets/box.png');
         game.load.image('grass', 'assets/grass.png');
-        //game.load.image('muteBTN', 'assets/muteBTN.png');
 
         // Load the sound
         game.load.audio('mainLoop', 'assets/mainLoop.wav');
@@ -46,8 +45,6 @@ var mainState = {
         this.mainLoop.play('', 0, 1, true);
         this.mainLoop.onLoop.add(this.playLevelMusic, this);
 
-        // TODO : mute button?
-
         // Add the physic to the mouse
         game.physics.arcade.enable(this.mouse);
 
@@ -63,7 +60,7 @@ var mainState = {
         downKey.onDown.add(this.moveDown, this);
         downKey.onUp.add(this.moveReset, this);
 
-        game.input.onDown.add(this.toggleMute, this); // Clic
+        game.input.onDown.add(this.toggleMute, this); // click to mute
 
         this.boxes = game.add.group(); // Create a group for the boxes
         this.boxes.enableBody = true;  // Add physics to the group
