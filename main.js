@@ -1,4 +1,4 @@
-// Initialize Phaser, and create a 640x480px game
+// Initialize Phaser and create a 640x480px game
 var game = new Phaser.Game(600, 480, Phaser.AUTO, 'gameDiv');
 
 WebFontConfig = {
@@ -7,27 +7,28 @@ WebFontConfig = {
     }
 };
 
-// Create our 'main' state that will contain the game
+// Variable that contains the game
 var mainState = {
 
     preload: function() {
-        // Load the google font specified in the WebFontConfig
+        // Load the google font specified in the var WebFontConfig
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
         // Load the pictures
         game.load.image('mouse', 'assets/mouse.png');
         game.load.image('box', 'assets/box.png');
         game.load.image('grass', 'assets/grass.png');
-        //game.load.image('muteBTN', 'assets/muteBTN.png');
 
         // Load the sound
         game.load.audio('mainLoop', 'assets/mainLoop.wav');
 
-        // velocity of the boxes
+        // Velocity of the boxes
         this.boxVelocity = -200;
+
         // speed of the background grass tiles
         this.grassTileSpeed = 3.35;
-        // "blocks" the space button during playing the game
+
+        // "block" the space button during playing the game
         this.playing = false;
     },
 
@@ -46,12 +47,10 @@ var mainState = {
         this.mainLoop.play('', 0, 1, true);
         this.mainLoop.onLoop.add(this.playLevelMusic, this);
 
-        // TODO : mute button?
-
         // Add the physic to the mouse
         game.physics.arcade.enable(this.mouse);
 
-        // Call the function when the keys are hit
+        // Call the function when the keys are hit or mouse click
         var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR); // start
         spaceKey.onDown.add(this.startGame, this);
 
@@ -63,13 +62,13 @@ var mainState = {
         downKey.onDown.add(this.moveDown, this);
         downKey.onUp.add(this.moveReset, this);
 
-        game.input.onDown.add(this.toggleMute, this); // Clic
+        game.input.onDown.add(this.toggleMute, this); // Click
 
         this.boxes = game.add.group(); // Create a group for the boxes
         this.boxes.enableBody = true;  // Add physics to the group
         this.boxes.createMultiple(20, 'box'); // Create 20 boxes
 
-        //start label, explanations
+        //start label with explanations
         this.labelStartKey = game.add.text(this.world.centerX/3, this.world.centerY/2, "Press SPACE \nto start game", {font: "80px Akronim", fill: "#ffffff"});
     },
 
@@ -91,7 +90,7 @@ var mainState = {
             this.playing = true;
 
             //timer for loops
-            this.timer = game.time.events.loop(1500, this.addRowOfBoxes, this);
+            this.timer = game.time.events.loop(1500, this.addARowOfBoxes, this);
 
             //scoring
             this.score = 0;
@@ -133,7 +132,7 @@ var mainState = {
         // Start the 'main' state, which restarts the game
         this.playing = false;
         confirm("Game Over! You got "+this.score+
-            " points.", "");
+            " points.");
 
         // Stop sound
         this.mainLoop.loop = false;
@@ -142,7 +141,7 @@ var mainState = {
         game.state.start('main');
     },
 
-    addOnebox: function(x, y) {
+    addOnlyOneBox: function(x, y) {
         // Get the first dead box of our group
         var box = this.boxes.getFirstDead();
 
@@ -157,14 +156,14 @@ var mainState = {
         box.outOfBoundsKill = true;
     },
 
-    addRowOfBoxes: function() {
+    addARowOfBoxes: function() {
         // Pick where the hole will be
         var hole = Math.floor(Math.random() * 5) + 1;
 
         // Add the 6 boxes
         for (var i = 0; i < 8; i++)
             if (i != hole && i != hole + 1)
-                this.addOnebox(600, i * 60);
+                this.addOnlyOneBox(600, i * 60);
         this.scored();
     },
 
